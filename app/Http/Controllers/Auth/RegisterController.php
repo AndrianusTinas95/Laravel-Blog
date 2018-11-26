@@ -19,7 +19,7 @@ class RegisterController extends Controller
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
-    */
+     */
 
     use RegistersUsers;
 
@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo;
 
     /**
      * Create a new controller instance.
@@ -37,6 +37,13 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+        if (auth()->check() && auth()->user()->role->id == 1) {
+            $this->redirectTo = route('admin.dashboard');
+        } else if (auth()->check() && auth()->user()->role->id == 2) {
+            $this->redirectTo = route('author.dashboard');
+        } else {
+            $this->redirectTo = route('login');
+        }
         $this->middleware('guest');
     }
 

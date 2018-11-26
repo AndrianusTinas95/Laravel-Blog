@@ -16,7 +16,7 @@ class LoginController extends Controller
     | redirecting them to your home screen. The controller uses a trait
     | to conveniently provide its functionality to your applications.
     |
-    */
+     */
 
     use AuthenticatesUsers;
 
@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo;
 
     /**
      * Create a new controller instance.
@@ -34,6 +34,13 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        if (auth()->check() && auth()->user()->role->id == 1) {
+            $this->redirectTo = route('admin.dashboard');
+        } else if (auth()->check() && auth()->user()->role->id == 2) {
+            $this->redirectTo = route('author.dashboard');
+        } else {
+            $this->redirectTo = route('login');
+        }
         $this->middleware('guest')->except('logout');
     }
 }
