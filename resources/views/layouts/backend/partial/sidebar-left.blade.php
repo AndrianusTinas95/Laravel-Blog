@@ -39,6 +39,12 @@
                     <span>Dashboard</span>
                 </a>
             </li>
+            <li class="{{request()->is('admin/tag*') ? 'active':'' }}">
+                <a href="{{route('admin.tag.index')}}">
+                    <i class="material-icons">label</i>
+                    <span>Tag</span>
+                </a>
+            </li>
             @elseif (request()->is('author*'))
             <li class="{{request()->is('author/dashboard') ? 'active':'' }}">
                 <a href="{{route('author.dashboard')}}">

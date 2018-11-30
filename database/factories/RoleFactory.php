@@ -4,7 +4,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\Role::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->jobTitle,
-        'slug' => $faker->word
+        'name' => $name = $faker->unique()->jobTitle,
+        'slug' => str_slug($name)
     ];
 });
