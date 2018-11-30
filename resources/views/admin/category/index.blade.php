@@ -3,15 +3,15 @@
 <!-- JQuery DataTable Css -->
 <link href="{{asset('assets/backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
 @endpush
-@section('title','tag - index')
+@section('title','Category - index')
 
 @section('content')
 
     <div class="container-fluid">
         <div class="block-header">
-            <a class="btn btn-primary waves-effect" href="{{route('admin.tag.create')}}">
+            <a class="btn btn-primary waves-effect" href="{{route('admin.category.create')}}">
                 <i class="material-icons">add</i>
-                <span>Add New Tag</span>
+                <span>Add New Category</span>
             </a>
         </div>
         <!-- Exportable Table -->
@@ -20,7 +20,7 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                            ALL TAGS 
+                            ALL Categories 
                         </h2>
                     </div>
                     <div class="body">
@@ -45,24 +45,24 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach ($tags as $i=> $tag)
+                                    @foreach ($categories as $i=> $category)
                                         <tr>
                                             <td>{{$i+1}}</td>
-                                            <td>{{$tag->name}}</td>
-                                            <td>{{$tag->created_at}}</td>
-                                            <td>{{$tag->updated_at}}</td>
+                                            <td>{{$category->name}}</td>
+                                            <td>{{$category->created_at}}</td>
+                                            <td>{{$category->updated_at}}</td>
                                             <td>
-                                                <a href="{{route('admin.tag.edit',$tag->id)}}" class="btn btn-warning waves-effect">
+                                                <a href="{{route('admin.category.edit',$category->id)}}" class="btn btn-warning waves-effect">
                                                     <i class="material-icons">edit</i>
                                                 </a>
                                                 <button type="button" 
                                                     class="btn btn-danger waves-effect"
-                                                    onclick="deleteTag({{$tag->id}})"
+                                                    onclick="deleteCategory({{$category->id}})"
                                                     >
                                                     <i class="material-icons">delete</i>
                                                 </button>
-                                                <form id="delete-form-{{$tag->id}}" 
-                                                    action="{{route('admin.tag.destroy',$tag->id)}}" 
+                                                <form id="delete-form-{{$category->id}}" 
+                                                    action="{{route('admin.category.destroy',$category->id)}}" 
                                                     method="POST"
                                                     style="display:none;"
                                                     >
@@ -105,7 +105,7 @@
 @push('script')
     <script src="{{asset('assets/backend/js/pages/tables/jquery-datatable.js')}}"></script>
     <script>
-        function deleteTag(id){
+        function deleteCategory(id){
             const swalWithBootstrapButtons = swal.mixin({
             confirmButtonClass: 'btn btn-success',
             cancelButtonClass: 'btn btn-danger',
