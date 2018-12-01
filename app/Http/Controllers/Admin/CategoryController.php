@@ -70,13 +70,13 @@ class CategoryController extends Controller
             if (!Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->makeDirectory($path);
             }
-            //resize image for category or slider category
+            //resize image for category or slider category and sat template image
             if ($path == 'category/') {
-                $imageFile = Image::make($request->file('image'))->resize(1600, 400)->save('storage/' . $path . 'template.png');
+                $imageFile = Image::make($request->file('image'))->resize(1600, 400)->save('storage/' . $path . 'default.png');
                 $category->image = $imageNewName;
                 $category->save();
             } else {
-                $imageFile = Image::make($request->file('image'))->resize(500, 300)->save('storage/' . $path . 'template.png');
+                $imageFile = Image::make($request->file('image'))->resize(500, 300)->save('storage/' . $path . 'default.png');
             }
             $this->deleteImage($path . $imageOldName);
 
@@ -84,11 +84,11 @@ class CategoryController extends Controller
         }
     }
 
-    public function deleteImage($image)
+    public function deleteImage($path, $image)
     {
-        if ($image && ($image != 'category/default.png' || $image != 'category/slider/default.png')) {
+        if ($image != 'default.png') {
             try {
-                Storage::disk('public')->delete($image);
+                Storage::disk('public')->delete($path . $image);
             } catch (FileNotFoundException $e) {
                 //throw $th;
             }
@@ -145,8 +145,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $this->deleteImage('category/slider/' . $category->image);
-        $this->deleteImage('category/' . $category->image);
+        $this->deleteImage('category/slider/', $category->image);
+        $this->deleteImage('category/', $category->image);
 
         $category->delete();
 
