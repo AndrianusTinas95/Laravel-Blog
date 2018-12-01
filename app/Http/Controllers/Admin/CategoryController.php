@@ -57,7 +57,7 @@ class CategoryController extends Controller
     {
         if ($request->image) {
             $imageOldName = $category->image;
-            $imageNewName = config('app.name') . '-' . $category->slug . '-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
+            $imageNewName = config('app.name') . '-' . $category->slug . '-' . time() . '.' . $request->image->getClientOriginalExtension();
             $this->uploadImage($request, $category, 'category/', $imageNewName, $imageOldName);
             $this->uploadImage($request, $category, 'category/slider/', $imageNewName, $imageOldName);
         }
@@ -78,7 +78,7 @@ class CategoryController extends Controller
             } else {
                 $imageFile = Image::make($request->file('image'))->resize(500, 300)->save('storage/' . $path . 'default.png');
             }
-            $this->deleteImage($path . $imageOldName);
+            $this->deleteImage($path, $imageOldName);
 
             Storage::disk('public')->put($path . $imageNewName, $imageFile);
         }
