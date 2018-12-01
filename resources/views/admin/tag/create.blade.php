@@ -19,18 +19,9 @@
                     <h2>ADD NEW TAG</h2>
                 </div>
                 <div class="body">
-                    <form action="{{route('admin.tag.store')}}" method="POST">
-                        @csrf
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <input type="text" class="form-control" name="name" id="name"  maxlength="191" minlength="3" required>
-                                <label class="form-label">Tag Name</label>
-                            </div>
-                            <div class="help-info">Min. 3, Max. 191 characters</div>
-                        </div>
-                        <a href="{{route('admin.tag.index')}}" class="btn btn-danger m-t-15 waves-effect" >BACK</a>
-                        <button class="btn btn-primary m-t-15  waves-effect" type="submit">SUBMIT</button>
-                    </form>
+                    {!! Form::open(['route'=>'admin.tag.store','files'=>true]) !!}
+                        @include('admin.tag._form')
+                    {!! Form::close()!!}
                 </div>
             </div>
         </div>

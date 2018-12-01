@@ -3,7 +3,7 @@
 <!-- JQuery DataTable Css -->
 <link href="{{asset('assets/backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
 @endpush
-@section('title','tag - index')
+@section('title','Tag - Index')
 
 @section('content')
 

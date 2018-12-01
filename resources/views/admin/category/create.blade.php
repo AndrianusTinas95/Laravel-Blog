@@ -19,27 +19,9 @@
                     <h2>ADD NEW CATEGORY</h2>
                 </div>
                 <div class="body">
-                    <form action="{{route('admin.category.store')}}" method="POST" 
-                        enctype="multipart/form-data"
-                        >
-                        @csrf
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <input type="text" class="form-control" name="name" id="name"  maxlength="191" minlength="3" required>
-                                <label class="form-label">Category Name</label>
-                            </div>
-                            <div class="help-info">Min. 3, Max. 191 characters</div>
-                        </div>
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <input type="file" class="form-control" name="image" id="image" >
-                                <label class="form-label sr-only">Category Image</label>
-                            </div>
-                            <div class="help-info">Image, Type:jpg,jpeg,png,bmp ; Max. 8000Kb </div>
-                        </div>
-                        <a href="{{route('admin.category.index')}}" class="btn btn-danger m-t-15 waves-effect" >BACK</a>
-                        <button class="btn btn-primary m-t-15  waves-effect" type="submit">SUBMIT</button>
-                    </form>
+                    {!! Form::open(['route'=>'admin.category.store','files'=>true]) !!}
+                        @include('admin.category._form')
+                    {!! Form::close()!!}
                 </div>
             </div>
         </div>

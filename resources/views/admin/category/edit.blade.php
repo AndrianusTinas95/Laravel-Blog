@@ -19,19 +19,10 @@
                     <h2>EDIT CATEGORY</h2>
                 </div>
                 <div class="body">
-                    <form action="{{route('admin.category.update',$category->id)}}" method="POST">
-                        @csrf
+                    {!! Form::model($category,['route'=>['admin.category.update',$category->id],'files'=>true]) !!}
                         @method('PUT')
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <input type="text" class="form-control" name="name" id="name" value="{{$category->name}}" maxlength="191" minlength="3" required>
-                                <label class="form-label">Category Name</label>
-                            </div>
-                            <div class="help-info">Min. 3, Max. 191 characters</div>
-                        </div>
-                        <a href="{{route('admin.category.index')}}" class="btn btn-danger m-t-15 waves-effect" >BACK</a>
-                        <button class="btn btn-primary m-t-15  waves-effect" type="submit">UPDATE</button>
-                    </form>
+                        @include('admin.category._form')
+                    {!! Form::close()!!}
                 </div>
             </div>
         </div>

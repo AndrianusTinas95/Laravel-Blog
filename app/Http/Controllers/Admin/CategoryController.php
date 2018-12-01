@@ -45,9 +45,7 @@ class CategoryController extends Controller
         $request['slug'] = str_slug($request->name);
         $category = Category::create($request->except('image'));
 
-        $imageName = config('app.name') . '-' . $category->slug . '-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
-        $this->uploadImage($request, $category, 'category/', $imageName);
-        $this->uploadImage($request, $category, 'category/slider/', $imageName);
+        $this->addImage($request, $category);
 
         Toastr::success('Category Created ', 'Success');
 
@@ -55,21 +53,34 @@ class CategoryController extends Controller
 
     }
 
-    public function uploadImage($request, $category, $path, $imageName)
+    public function addImage($request, $category)
+    {
+        if ($request->image) {
+            $imageOldName = $category->image;
+            $imageNewName = config('app.name') . '-' . $category->slug . '-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
+            $this->uploadImage($request, $category, 'category/', $imageNewName, $imageOldName);
+            $this->uploadImage($request, $category, 'category/slider/', $imageNewName, $imageOldName);
+        }
+    }
+
+    public function uploadImage($request, $category, $path, $imageNewName, $imageOldName)
     {
         if ($request->hasFile('image')) {
-
+            // create path
+            if (!Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->makeDirectory($path);
+            }
             //resize image for category or slider category
             if ($path == 'category/') {
-                $imageFile = Image::make($request->file('image'))->resize(1600, 479)->save($request->image->getClientOriginalName());
-                $category->image = $imageName;
+                $imageFile = Image::make($request->file('image'))->resize(1600, 400)->save('storage/' . $path . 'template.png');
+                $category->image = $imageNewName;
                 $category->save();
             } else {
-                $imageFile = Image::make($request->file('image'))->resize(500, 333)->save($request->image->getClientOriginalName());
+                $imageFile = Image::make($request->file('image'))->resize(500, 300)->save('storage/' . $path . 'template.png');
             }
-            $this->deleteImage($path . $category->image);
+            $this->deleteImage($path . $imageOldName);
 
-            Storage::disk('public')->put($path . $imageName, $imageFile);
+            Storage::disk('public')->put($path . $imageNewName, $imageFile);
         }
     }
 
@@ -118,10 +129,8 @@ class CategoryController extends Controller
     {
         $request['slug'] = str_slug($request->name);
         $category->update($request->except('image'));
-        $imageName = config('app.name') . '-' . $category->slug . '-' . uniqid() . '.' . $request->image->getClientOriginalExtension();
 
-        $this->uploadImage($request, $category, 'category/', $imageName);
-        $this->uploadImage($request, $category, 'category/slider/', $imageName);
+        $this->addImage($request, $category);
 
         Toastr::success('Category Updated ', 'Success');
 
