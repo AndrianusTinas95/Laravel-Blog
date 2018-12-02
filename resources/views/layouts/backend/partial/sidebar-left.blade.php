@@ -51,6 +51,12 @@
                     <span>Category</span>
                 </a>
             </li>
+            <li class="{{request()->is('admin/post*') ? 'active':'' }}">
+                <a href="{{route('admin.post.index')}}">
+                    <i class="material-icons">library_books</i>
+                    <span>Posts</span>
+                </a>
+            </li>
             @elseif (request()->is('author*'))
             <li class="{{request()->is('author/dashboard') ? 'active':'' }}">
                 <a href="{{route('author.dashboard')}}">
