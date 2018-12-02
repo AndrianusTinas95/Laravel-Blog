@@ -141,7 +141,25 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
-        //
+        $request['author'] = auth()->user()->id;
+        $request['slug'] = str_slug($request->title);
+        $request['is_approved'] = true;
+
+        if (isset($request->status)) {
+            $request['status'] = true;
+        } else {
+            $request['status'] = false;
+        }
+
+        $post->update($request->except('image'));
+        $this->addImage($request, $post);
+
+        $post->categories()->attach($request->categories);
+        $post->tags()->attach($request->tags);
+
+        Toastr::success('Post Updated', 'Succses');
+
+        return redirect()->route('admin.post.index');
     }
 
     /**

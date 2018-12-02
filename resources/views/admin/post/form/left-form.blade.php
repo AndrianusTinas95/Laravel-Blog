@@ -22,6 +22,6 @@
 </div>
 
 <div class="form-group form-float">
-    <input type="checkbox" id="publish" class="filled-in" name="status" value="1">
-    <label for="publish">Publish</label>
+    {!! Form::checkbox('status',1,isset($post->status) ? $post->status == true ? true : false : false,['class'=>'filled-in','id'=>'status']) !!}
+    <label for="status">Publish</label>
 </div>

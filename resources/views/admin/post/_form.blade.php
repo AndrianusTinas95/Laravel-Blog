@@ -33,7 +33,9 @@
                 <h2>BODY</h2>
             </div>
             <div class="body"> 
-                <textarea name="body" id="tinymce" cols="30" rows="10"></textarea>
+                <textarea name="body" id="tinymce" cols="30" rows="10">
+                    {{isset($post)?$post->body:''}}
+                </textarea>
             </div>
         </div>
     </div>
