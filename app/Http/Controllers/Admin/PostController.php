@@ -56,10 +56,12 @@ class PostController extends Controller
         }
 
         $post = Post::create($request->except('image'));
-        $this->addImage($request, $post);
 
         $post->categories()->attach($request->categories);
         $post->tags()->attach($request->tags);
+
+        $this->addImage($request, $post);
+
 
         Toastr::success('Post Saved', 'Succses');
 
@@ -114,9 +116,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return view('admin.post.show', compact('post'));
     }
 
     /**
@@ -152,10 +154,12 @@ class PostController extends Controller
         }
 
         $post->update($request->except('image'));
-        $this->addImage($request, $post);
 
         $post->categories()->attach($request->categories);
         $post->tags()->attach($request->tags);
+
+        $this->addImage($request, $post);
+
 
         Toastr::success('Post Updated', 'Succses');
 
