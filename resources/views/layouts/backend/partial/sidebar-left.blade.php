@@ -32,39 +32,41 @@
     <div class="menu">
         <ul class="list">
             <li class="header">MAIN NAVIGATION</li>
-            @if (request()->is('admin*'))
-            <li class="{{request()->is('admin/dashboard') ? 'active':'' }}">
-                <a href="{{route('admin.dashboard')}}">
+            
+            
+            @php
+                if (request()->is('admin*')) {
+                    $user='admin';
+                }else{
+                    $user='author';
+                }
+            @endphp
+
+            @if (request()->is('admin*') || request()->is('author*'))
+            <li class="{{request()->is($user.'/dashboard') ? 'active':'' }}">
+                <a href="{{route($user.'.dashboard')}}">
                     <i class="material-icons">dashboard</i>
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="{{request()->is('admin/tag*') ? 'active':'' }}">
-                <a href="{{route('admin.tag.index')}}">
+            <li class="{{request()->is($user.'/tag*') ? 'active':'' }}">
+                <a href="{{route($user.'.tag.index')}}">
                     <i class="material-icons">label</i>
                     <span>Tag</span>
                 </a>
             </li>
-            <li class="{{request()->is('admin/category*') ? 'active':'' }}">
-                <a href="{{route('admin.category.index')}}">
+            <li class="{{request()->is($user.'/category*') ? 'active':'' }}">
+                <a href="{{route($user.'.category.index')}}">
                     <i class="material-icons">apps</i>
                     <span>Category</span>
                 </a>
             </li>
-            <li class="{{request()->is('admin/post*') ? 'active':'' }}">
-                <a href="{{route('admin.post.index')}}">
+            <li class="{{request()->is($user.'/post*') ? 'active':'' }}">
+                <a href="{{route($user.'.post.index')}}">
                     <i class="material-icons">library_books</i>
                     <span>Posts</span>
                 </a>
             </li>
-            @elseif (request()->is('author*'))
-            <li class="{{request()->is('author/dashboard') ? 'active':'' }}">
-                <a href="{{route('author.dashboard')}}">
-                    <i class="material-icons">dashboard</i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-                
             @endif
             <li class="header">System</li>
             <li>

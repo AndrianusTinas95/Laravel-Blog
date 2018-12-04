@@ -175,6 +175,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * User Provider
+         */
+        App\Providers\UserServiceProvider::class,
+
     ],
 
     /*
@@ -226,6 +231,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'ImageUpload' => App\Helpers\ImageUpload::class,
 
     ],
 

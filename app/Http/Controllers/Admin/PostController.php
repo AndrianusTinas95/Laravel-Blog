@@ -9,11 +9,17 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Http\Requests\Admin\PostRequest;
 use Brian2694\Toastr\Facades\Toastr;
-use Illuminate\Support\Facades\Storage;
-use Image;
+use ImageUpload;
 
 class PostController extends Controller
 {
+    public $image;
+
+    public function __construct()
+    {
+        $this->image = new ImageUpload();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -60,7 +66,7 @@ class PostController extends Controller
         $post->categories()->attach($request->categories);
         $post->tags()->attach($request->tags);
 
-        $this->addImage($request, $post);
+        $this->image->add($request, $post, 'post');
 
 
         Toastr::success('Post Saved', 'Succses');
@@ -69,47 +75,6 @@ class PostController extends Controller
 
     }
 
-    public function addImage($request, $post)
-    {
-        if ($request->image) {
-            $imageOldName = $post->image;
-            $imageNewName = config('app.name') . '-' . $post->slug . '-' . time() . '.' . $request->image->getClientOriginalExtension();
-            $this->uploadImage($request, $post, 'post/', $imageNewName, $imageOldName);
-            $this->uploadImage($request, $post, 'post/slider/', $imageNewName, $imageOldName);
-        }
-    }
-
-    public function uploadImage($request, $post, $path, $imageNewName, $imageOldName)
-    {
-        if ($request->hasFile('image')) {
-            // create path
-            if (!Storage::disk('public')->exists($path)) {
-                Storage::disk('public')->makeDirectory($path);
-            }
-            //resize image for post or slider post and sat template image
-            if ($path == 'post/') {
-                $imageFile = Image::make($request->file('image'))->resize(1600, 1000)->save('storage/' . $path . 'default.png');
-                $post->image = $imageNewName;
-                $post->save();
-            } else {
-                $imageFile = Image::make($request->file('image'))->resize(200, 200)->save('storage/' . $path . 'default.png');
-            }
-            $this->deleteImage($path, $imageOldName);
-
-            Storage::disk('public')->put($path . $imageNewName, $imageFile);
-        }
-    }
-
-    public function deleteImage($path, $image)
-    {
-        if ($image != 'default.png') {
-            try {
-                Storage::disk('public')->delete($path . $image);
-            } catch (FileNotFoundException $e) {
-                //throw $th;
-            }
-        }
-    }
     /**
      * Display the specified resource.
      *
@@ -158,7 +123,9 @@ class PostController extends Controller
         $post->categories()->attach($request->categories);
         $post->tags()->attach($request->tags);
 
-        $this->addImage($request, $post);
+        $this->image->add($request, $post, 'post');
+
+        // $this->addImage($request, $post);
 
 
         Toastr::success('Post Updated', 'Succses');
@@ -174,8 +141,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        $this->deleteImage('post/', $post->image);
-        $this->deleteImage('post/slider/', $post->image);
+        $this->image->delete('post', $post->image);
+        $this->image->delete('post/slider', $post->image);
+
         $post->delete();
 
         Toastr::success('Post Deleted :) ', 'Success');
