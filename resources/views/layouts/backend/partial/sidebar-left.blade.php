@@ -68,6 +68,12 @@
                     <span>Posts Pending</span>
                 </a>
             </li>
+            <li class="{{request()->is('admin/subscriber*') ? 'active':'' }}">
+                <a href="{{route($user.'.subscriber.index')}}">
+                    <i class="material-icons">subscriptions</i>
+                    <span>Subcribers</span>
+                </a>
+            </li>
             @endif
             @endif
             <li class="header">System</li>
