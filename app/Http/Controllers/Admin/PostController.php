@@ -11,6 +11,9 @@ use App\Http\Requests\Admin\PostRequest;
 use Brian2694\Toastr\Facades\Toastr;
 use ImageUpload;
 use App\Notifications\AuthorPostApproved;
+use App\Models\Subscriber;
+use App\Notifications\NewPostNotify;
+use Notification;
 
 class PostController extends Controller
 {
@@ -69,6 +72,7 @@ class PostController extends Controller
 
         $this->image->add($request, $post, 'post');
 
+        $this->sendSubscribers($post); # send subscribers notify new post status active
 
         Toastr::success('Post Saved', 'Succses');
 
@@ -165,11 +169,25 @@ class PostController extends Controller
             $post->save();
 
             $post->user->notify(new AuthorPostApproved($post));
+
+            $this->sendSubscribers($post);
+
             Toastr::success('Post Successfully Approved :) ', 'Success');
         } else {
             Toastr::info('This Post is alredy approved ', 'Info');
 
         }
         return redirect()->back();
+    }
+
+    public function sendSubscribers($post)
+    {
+        if ($post->status == true) {
+            $subscribers = Subscriber::all();
+
+            foreach ($subscribers as $key => $subscriber) {
+                Notification::route('mail', $subscriber->email)->notify(new NewPostNotify($post));
+            }
+        }
     }
 }
