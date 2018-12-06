@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\Category;
 
 class HomeController extends Controller
 {
@@ -13,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //
     }
 
     /**
@@ -23,6 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $categories = Category::all();
+        $posts = Post::where(['status' => true, 'is_approved' => true])->latest()->get()->take(9);
+        return view('welcome', compact('categories', 'posts'));
+    }
+
+    public function dashboard()
+    {
+
         if (auth()->check() && auth()->user()->role->id == 1) {
             return redirect()->route('admin.dashboard');
         } else if (auth()->check() && auth()->user()->role->id == 2) {

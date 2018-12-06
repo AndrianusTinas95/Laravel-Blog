@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Post;
+
 
 
 
@@ -16,15 +16,13 @@ use App\Models\Post;
 |
  */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('subscriber', 'SubscriberController@store')->name('subscriber.store');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('dashboard');
+Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard')->middleware('auth');
 
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');

@@ -38,7 +38,7 @@ class ImageUpload
                 $data->image = $imageNewName;
                 $data->save();
             } else {
-                $imageFile = Image::make($request->file('image'))->resize(200, 200)->save('storage/' . $path . '/' . 'default.png');
+                $imageFile = Image::make($request->file('image'))->resize(500, 333)->save('storage/' . $path . '/' . 'default.png');//500 * 333
             }
             $this->delete($path, $imageOldName);
 
