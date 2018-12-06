@@ -10,6 +10,7 @@ use App\Models\Tag;
 use App\Http\Requests\Admin\PostRequest;
 use Brian2694\Toastr\Facades\Toastr;
 use ImageUpload;
+use App\Notifications\AuthorPostApproved;
 
 class PostController extends Controller
 {
@@ -163,6 +164,7 @@ class PostController extends Controller
             $post->is_approved = true;
             $post->save();
 
+            $post->user->notify(new AuthorPostApproved($post));
             Toastr::success('Post Successfully Approved :) ', 'Success');
         } else {
             Toastr::info('This Post is alredy approved ', 'Info');
