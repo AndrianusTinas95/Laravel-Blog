@@ -3,7 +3,7 @@
 <!-- JQuery DataTable Css -->
 <link href="{{asset('assets/backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
 @endpush
-@section('title','Post - Index')
+@section('title','Post - Pending')
 
 @section('content')
 
@@ -20,7 +20,7 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                            ALL POSTS 
+                            ALL POSTS PENDING
                         <span class="badge bg-blue"> {{$posts->count()}}</span>
                         </h2>
                     </div>
@@ -77,6 +77,20 @@
                                             <td>{{$post->created_at}}</td>
                                             {{-- <td>{{$post->updated_at}}</td> --}}
                                             <td>
+                                                <button type="button" 
+                                                    class="btn btn-success waves-effect"
+                                                    onclick="approvePost({{$post->id}})"
+                                                    >
+                                                    <i class="material-icons">done</i>
+                                                </button>
+                                                <form id="approve-form-{{$post->id}}" 
+                                                    action="{{route('admin.post.approve',$post->id)}}" 
+                                                    method="POST"
+                                                    style="display:none;"
+                                                    >
+                                                    @csrf
+                                                    @method('PUT')
+                                                </form>
                                                 <a href="{{route('admin.post.show',$post->id)}}" class="btn btn-info waves-effect">
                                                     <i class="material-icons">visibility</i>
                                                 </a>
@@ -169,7 +183,41 @@
             }
             })
         }
+        function approvePost(id){
+            const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+            })
 
-         
+            swalWithBootstrapButtons({
+            title: 'Are you sure?',
+            text: "You want to aprove this post !",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, approve  it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+            }).then((result) => {
+            if (result.value) {
+                event.preventDefault();
+                document.getElementById('approve-form-'+id).submit();
+                swalWithBootstrapButtons(
+                'Approved!',
+                'Your data been approved.',
+                'success'
+                )
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons(
+                'Cancelled',
+                'The post remain pending :) ',
+                'info'
+                )
+            }
+            })
+        }
     </script>
 @endpush

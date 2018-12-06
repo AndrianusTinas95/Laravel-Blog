@@ -33,15 +33,9 @@
         <ul class="list">
             <li class="header">MAIN NAVIGATION</li>
             
-            
-            @php
-                if (request()->is('admin*')) {
-                    $user='admin';
-                }else{
-                    $user='author';
-                }
-            @endphp
-
+            @if (request()->is('admin*') ?  $user='admin' : $user='author' )
+            @endif
+                
             @if (request()->is('admin*') || request()->is('author*'))
             <li class="{{request()->is($user.'/dashboard') ? 'active':'' }}">
                 <a href="{{route($user.'.dashboard')}}">
@@ -67,6 +61,14 @@
                     <span>Posts</span>
                 </a>
             </li>
+            @if (request()->is('admin*'))
+            <li class="{{request()->is('admin/pending/post') ? 'active':'' }}">
+                <a href="{{route($user.'.post.pending')}}">
+                    <i class="material-icons">library_books</i>
+                    <span>Posts Pending</span>
+                </a>
+            </li>
+            @endif
             @endif
             <li class="header">System</li>
             <li>

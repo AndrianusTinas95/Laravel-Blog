@@ -15,15 +15,20 @@
 
 <div class="container-fluid">
     <div class="block-header">
-        <a class="btn btn-danger waves-effect" href="{{route('admin.post.index')}}">
-            <i class="material-icons">reply</i>
-            <span>BACK</span>
-        </a>
+        @if (request()->server('HTTP_REFERER')==route('admin.post.index') ? $url=route('admin.post.index'):$url=route('admin.post.pending'))
+            <a class="btn btn-danger waves-effect" href="{{$url}}">
+                <i class="material-icons">reply</i><span>BACK</span>
+            </a>
+        @endif
         @if ($post->is_approved == false)
-            <button type="button" class="btn btn-warning pull-right">
-                <i class="material-icons">add_circle</i>
+            <button type="button" class="btn btn-success waves-effect pull-right" onclick="approvePost({{$post->id}})">
+                <i class="material-icons">done</i>
                 <span>Approve</span>
             </button>
+            {!! Form::model($post,['route'=>['admin.post.approve',$post->id],'style'=>'display:none','id'=>'approval-form'])!!}
+                @method('PUT')
+            {!! Form::close()!!}
+
         @else
         <button type="button" class="btn btn-success pull-right" disabled>
                 <i class="material-icons">done</i>
@@ -132,6 +137,43 @@ $(function () {
     tinymce.suffix = ".min";
     tinyMCE.baseURL = '{{asset('assets/backend/plugins/tinymce')}}';
 });
+
+ function approvePost(id){
+            const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+            })
+
+            swalWithBootstrapButtons({
+            title: 'Are you sure?',
+            text: "You want to aprove this post !",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, approve  it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+            }).then((result) => {
+            if (result.value) {
+                event.preventDefault();
+                document.getElementById('approval-form').submit();
+                swalWithBootstrapButtons(
+                'Deleted!',
+                'Your data been deleted.',
+                'success'
+                )
+            } else if (
+                // Read more about handling dismissals
+                result.dismiss === swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons(
+                'Cancelled',
+                'The post remain pending :) ',
+                'info'
+                )
+            }
+            })
+        }
 </script>
 
 @endpush

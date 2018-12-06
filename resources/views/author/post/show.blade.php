@@ -20,8 +20,8 @@
             <span>BACK</span>
         </a>
         @if ($post->is_approved == false)
-            <button type="button" class="btn btn-warning pull-right">
-                <i class="material-icons">add_circle</i>
+            <button type="button" class="btn btn-success waves-effect pull-right">
+                <i class="material-icons">done</i>
                 <span>Approve</span>
             </button>
         @else

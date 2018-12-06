@@ -125,8 +125,6 @@ class PostController extends Controller
 
         $this->image->add($request, $post, 'post');
 
-        // $this->addImage($request, $post);
-
 
         Toastr::success('Post Updated', 'Succses');
 
@@ -149,5 +147,27 @@ class PostController extends Controller
         Toastr::success('Post Deleted :) ', 'Success');
 
         return redirect()->route('admin.post.index');
+    }
+
+    public function pending()
+    {
+
+        $posts = Post::where('is_approved', false)->latest()->get();
+        return view('admin.post.pending', compact('posts'));
+    }
+
+    public function approval($id)
+    {
+        $post = Post::find($id);
+        if ($post->is_approved == false) {
+            $post->is_approved = true;
+            $post->save();
+
+            Toastr::success('Post Successfully Approved :) ', 'Success');
+        } else {
+            Toastr::info('This Post is alredy approved ', 'Info');
+
+        }
+        return redirect()->back();
     }
 }

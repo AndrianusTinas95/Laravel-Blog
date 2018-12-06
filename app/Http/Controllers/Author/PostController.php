@@ -7,9 +7,19 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Http\Requests\Admin\PostRequest;
+use App\Helpers\ImageUpload;
+use Brian2694\Toastr\Facades\Toastr;
 
 class PostController extends Controller
 {
+    public $image;
+
+    public function __construct()
+    {
+        $this->image = new ImageUpload;
+        $this->authorizeResource(Post::class, 'post');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -39,9 +49,29 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        $request['author'] = auth()->user()->id;
+        $request['slug'] = str_slug($request->title);
+        $request['is_approved'] = false;
+
+        if (isset($request->status)) {
+            $request['status'] = true;
+        } else {
+            $request['status'] = false;
+        }
+
+        $post = Post::create($request->except('image'));
+
+        $post->categories()->attach($request->categories);
+        $post->tags()->attach($request->tags);
+
+        $this->image->add($request, $post, 'post');
+
+
+        Toastr::success('Post Saved', 'Succses');
+
+        return redirect()->route('author.post.index');
     }
 
     /**
@@ -52,7 +82,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        // if(response())
+        return view('author.post.show', compact('post'));
     }
 
     /**
@@ -63,7 +94,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $categories = Category::all()->pluck('name', 'id');
+        $tags = Tag::all()->pluck('name', 'id');
+        return view('author.post.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -73,9 +106,29 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
-        //
+        $request['author'] = auth()->user()->id;
+        $request['slug'] = str_slug($request->title);
+        $request['is_approved'] = false;
+
+        if (isset($request->status)) {
+            $request['status'] = true;
+        } else {
+            $request['status'] = false;
+        }
+
+        $post->update($request->except('image'));
+
+        $post->categories()->attach($request->categories);
+        $post->tags()->attach($request->tags);
+
+        $this->image->add($request, $post, 'post');
+
+
+        Toastr::success('Post Updated', 'Succses');
+
+        return redirect()->route('author.post.index');
     }
 
     /**
@@ -86,6 +139,13 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $this->image->delete('post', $post->image);
+        $this->image->delete('post/slider', $post->image);
+
+        $post->delete();
+
+        Toastr::success('Post Deleted :) ', 'Success');
+
+        return redirect()->route('author.post.index');
     }
 }
