@@ -10,6 +10,9 @@ use App\Models\Tag;
 use App\Http\Requests\Admin\PostRequest;
 use App\Helpers\ImageUpload;
 use Brian2694\Toastr\Facades\Toastr;
+use Notification;
+use App\Models\User;
+use App\Notifications\NewAuthorPost;
 
 class PostController extends Controller
 {
@@ -68,6 +71,7 @@ class PostController extends Controller
 
         $this->image->add($request, $post, 'post');
 
+        Notification::send(User::where('role_id', 1)->get(), new NewAuthorPost($post));
 
         Toastr::success('Post Saved', 'Succses');
 
@@ -82,7 +86,6 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        // if(response())
         return view('author.post.show', compact('post'));
     }
 
