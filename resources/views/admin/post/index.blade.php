@@ -111,9 +111,7 @@
     </div>
     
 
-</body>
 
-</html>
 
 @endsection
 @push('js')

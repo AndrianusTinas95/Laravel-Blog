@@ -16,7 +16,7 @@ class ImageUpload
             $this->path = $path;
 
             $imageOldName = $data->image;
-            $imageNewName = config('app.name') . '-' . $data->slug . '-' . time() . '.' . $request->image->getClientOriginalExtension();
+            $imageNewName = config('app.name') . '-' . $request->slug . '-' . time() . '.' . $request->image->getClientOriginalExtension();
 
             $this->upload($request, $data, $path, $imageNewName, $imageOldName);
 

@@ -75,8 +75,14 @@
                 </a>
             </li>
             @endif
-            @endif
             <li class="header">System</li>
+            <li class="{{request()->is($user.'/settings*') ? 'active':'' }}">
+                <a href="{{route($user.'.settings')}}">
+                    <i class="material-icons">settings</i>
+                    <span>Settings</span>
+                </a>
+            </li>
+            @endif
             <li>
                 <a class="dropdown-item" href="{{ route('logout') }}"
                     onclick="event.preventDefault();

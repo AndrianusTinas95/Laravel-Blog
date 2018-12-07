@@ -15,8 +15,8 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\User::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->name,
-        'username' => str_replace([' ', '.', ',', 'Mr', 'Ms'], '', $faker->unique()->name),
+        'name' => $name = $faker->unique()->name,
+        'username' => str_replace([' ', '.', ',', 'Mr', 'Ms'], '', $name),
         'email' => $faker->unique()->safeEmail,
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'image' => 'default.png',

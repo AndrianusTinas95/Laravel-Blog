@@ -26,9 +26,11 @@ Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard')->middlew
 
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('settings', 'SettingsController@index')->name('settings');
+    Route::put('profile-update', 'SettingsController@update')->name('profile.update');
+
     Route::resource('tag', 'TagController');
     Route::resource('category', 'CategoryController');
-
     Route::resource('post', 'PostController');
 
     Route::get('pending/post', 'PostController@pending')->name('post.pending');
