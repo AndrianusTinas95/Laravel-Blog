@@ -5,6 +5,12 @@
 <link href="{{asset('assets/frontend/css/home/styles.css')}}" rel="stylesheet">
 
 <link href="{{asset('assets/frontend/css/home/responsive.css')}}" rel="stylesheet">
+
+<style>
+	.favorite_posts{
+		color:blue
+	}
+</style>
 @endpush
 @section('content')
 <div class="main-slider">
@@ -49,16 +55,32 @@
 
 							<div class="blog-image"><img src="{{asset('storage/post/'.$post->image)}}" alt="Blog Image"></div>
 
-							<a class="avatar" href="#"><img src="{{asset('assets/frontend/images/icons8-team-355979.jpg')}}" alt="Profile Image"></a>
+							<a class="avatar" href="#"><img src="{{asset('storage/profile/slider/'.$post->user->image)}}" alt="Profile Image"></a>
 
 							<div class="blog-info">
 
 								<h4 class="title"><a href="#"><b>{!! $post->title !!}</b></a></h4>
 
 								<ul class="post-footer">
-									<li><a href="#"><i class="ion-heart"></i>57</a></li>
+									<li>
+										@guest
+										<a href="javascript:void(0)" onclick="toastr.info('To add favorite list. You need to login first.', 'Info',{
+											closeButton:true,
+											progressBar:true,
+										})"><i class="ion-heart"></i>{!! $post->favorite_to_users->count()!!}</a>
+										@else
+										<a href="javascript:void(0)" 
+										onclick="document.getElementById('favorite-form-{!! $post->id !!}').submit();" 
+										class="{!! !auth()->user()->favorite_posts()->where('post_id',$post->id)->count() == 0 ? 'favorite_posts' :''!!} ">
+											<i class="ion-heart"></i>{!! $post->favorite_to_users->count()!!}
+										</a>
+										
+										{!! Form::open(['route'=>['post.favorite',$post->id],'id'=>'favorite-form-'.$post->id,'style'=>'display:none;'])!!}
+										{!! Form::close()!!}
+										@endguest
+									</li>
 									<li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
-									<li><a href="#"><i class="ion-eye"></i>138</a></li>
+									<li><a href="#"><i class="ion-eye"></i>{!! $post->view!!}</a></li>
 								</ul>
 
 							</div><!-- blog-info -->
