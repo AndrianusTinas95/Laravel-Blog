@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Author;
+
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,7 +16,7 @@ class SettingsController extends Controller
 {
     public function index()
     {
-        return view('admin.settings');
+        return view('author.settings');
     }
     public function updateProfile(ProfileSetingsRequest $request)
     {

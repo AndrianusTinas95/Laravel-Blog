@@ -2,7 +2,7 @@
     <!-- User Info -->
     <div class="user-info">
         <div class="image">
-        <img src="{{asset('assets/backend/images/user.png')}}" width="48" height="48" alt="User" />
+        <img src="{!!asset('storage/profile/'.auth()->user()->image )!!}" width="48" height="48" alt="User" />
         </div>
         <div class="info-container">
             <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{auth()->user()->username}}</div>
@@ -10,7 +10,7 @@
             <div class="btn-group user-helper-dropdown">
                 <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                 <ul class="dropdown-menu pull-right">
-                    <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                    <li><a href="{!! auth()->user()->role_id == 1 ? route('admin.settings') : route('author.settings')!!}"><i class="material-icons">settings</i>Settings</a></li>
                     <li role="separator" class="divider"></li>
                     <li>
                         <a class="dropdown-item" href="{{ route('logout') }}"
@@ -37,12 +37,15 @@
             @endif
                 
             @if (request()->is('admin*') || request()->is('author*'))
+
             <li class="{{request()->is($user.'/dashboard') ? 'active':'' }}">
                 <a href="{{route($user.'.dashboard')}}">
                     <i class="material-icons">dashboard</i>
                     <span>Dashboard</span>
                 </a>
             </li>
+
+            @if (request()->is('admin*'))
             <li class="{{request()->is($user.'/tag*') ? 'active':'' }}">
                 <a href="{{route($user.'.tag.index')}}">
                     <i class="material-icons">label</i>
@@ -55,12 +58,15 @@
                     <span>Category</span>
                 </a>
             </li>
+            @endif
+
             <li class="{{request()->is($user.'/post*') ? 'active':'' }}">
                 <a href="{{route($user.'.post.index')}}">
                     <i class="material-icons">library_books</i>
                     <span>Posts</span>
                 </a>
             </li>
+
             @if (request()->is('admin*'))
             <li class="{{request()->is('admin/pending/post') ? 'active':'' }}">
                 <a href="{{route($user.'.post.pending')}}">
@@ -75,6 +81,7 @@
                 </a>
             </li>
             @endif
+
             <li class="header">System</li>
             <li class="{{request()->is($user.'/settings*') ? 'active':'' }}">
                 <a href="{{route($user.'.settings')}}">

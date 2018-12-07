@@ -33,7 +33,7 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="profile_settings">
-                                <form class="form-horizontal" action="{!! route('admin.profile.update')!!}" method="POST" enctype="multipart/form-data">
+                                <form class="form-horizontal" action="{!! route('author.profile.update')!!}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
                                     <div class="row clearfix">
@@ -94,7 +94,7 @@
                                 </form>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="settings_with_icon_title">
-                                    <form class="form-horizontal" action="{!! route('admin.password.update')!!}" method="POST" enctype="multipart/form-data">
+                                    <form class="form-horizontal" action="{!! route('author.password.update')!!}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
                                         <div class="row clearfix">
