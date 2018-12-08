@@ -19,7 +19,7 @@
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('subscriber', 'SubscriberController@store')->name('subscriber.store');
-
+Route::get('post/{slug}', 'PostController@details')->name('post.details');
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
@@ -41,6 +41,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     Route::get('pending/post', 'PostController@pending')->name('post.pending');
     Route::put('post/{id}/approve', 'PostController@approval')->name('post.approve');
 
+    Route::get('favorite', 'FavoriteController@index')->name('favorite.index');
+
     Route::get('subscriber', 'SubscriberController@index')->name('subscriber.index');
     Route::delete('subscriber/{id}', 'SubscriberController@destroy')->name('subscriber.destroy');
 });
@@ -52,9 +54,12 @@ Route::group(['as' => 'author.', 'prefix' => 'author', 'namespace' => 'author', 
     Route::put('profile-update', 'SettingsController@updateProfile')->name('profile.update');
     Route::put('password-update', 'SettingsController@updatePassword')->name('password.update');
 
-    Route::resource('tag', 'TagController');
-    Route::resource('category', 'CategoryController');
+    // Route::resource('tag', 'TagController');
+    // Route::resource('category', 'CategoryController');
     Route::resource('post', 'PostController');
+
+    Route::get('favorite', 'FavoriteController@index')->name('favorite.index');
+
 });
 
 // Route::get('/test/{post}', function (Post $post) {

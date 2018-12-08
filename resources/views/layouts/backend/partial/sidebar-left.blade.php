@@ -66,6 +66,7 @@
                     <span>Posts</span>
                 </a>
             </li>
+            
 
             @if (request()->is('admin*'))
             <li class="{{request()->is('admin/pending/post') ? 'active':'' }}">
@@ -74,6 +75,15 @@
                     <span>Posts Pending</span>
                 </a>
             </li>
+            @endif
+            
+            <li class="{{request()->is($user.'/favorite*') ? 'active':'' }}">
+                <a href="{{route($user.'.favorite.index')}}">
+                    <i class="material-icons">favorite</i>
+                    <span>Favorite</span>
+                </a>
+            </li>
+            @if (request()->is('admin*'))  
             <li class="{{request()->is('admin/subscriber*') ? 'active':'' }}">
                 <a href="{{route($user.'.subscriber.index')}}">
                     <i class="material-icons">subscriptions</i>

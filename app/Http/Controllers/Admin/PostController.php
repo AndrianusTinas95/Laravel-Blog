@@ -113,7 +113,7 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
-        $request['author'] = auth()->user()->id;
+        // $request['author'] = auth()->user()->id;
         $request['slug'] = str_slug($request->title);
         $request['is_approved'] = true;
 

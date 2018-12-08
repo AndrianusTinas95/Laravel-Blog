@@ -19,11 +19,11 @@ class PostPolicy
      */
     public function view(User $user, Post $post)
     {
-        if ($user->role->id > 1) {
-            return $user->id === $post->author;
-        } else {
-            return $post;
-        }
+        // if ($user->role->id > 1) {
+        //     return $user->id === $post->author;
+        // } else {
+        return $post;
+        // }
     }
 
     /**
@@ -34,7 +34,7 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        return true;
+        return $user;
     }
 
     /**

@@ -15,11 +15,9 @@
 
 <div class="container-fluid">
     <div class="block-header">
-        @if (request()->server('HTTP_REFERER')==route('admin.post.index') ? $url=route('admin.post.index'):$url=route('admin.post.pending'))
-            <a class="btn btn-danger waves-effect" href="{{$url}}">
-                <i class="material-icons">reply</i><span>BACK</span>
-            </a>
-        @endif
+        <a class="btn btn-danger waves-effect" href="{{request()->server('HTTP_REFERER')}}">
+            <i class="material-icons">reply</i><span>BACK</span>
+        </a>
         @if ($post->is_approved == false)
             <button type="button" class="btn btn-success waves-effect pull-right" onclick="approvePost({{$post->id}})">
                 <i class="material-icons">done</i>

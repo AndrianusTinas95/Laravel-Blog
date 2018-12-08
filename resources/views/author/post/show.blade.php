@@ -15,7 +15,7 @@
 
 <div class="container-fluid">
     <div class="block-header">
-        <a class="btn btn-danger waves-effect" href="{{route('author.post.index')}}">
+        <a class="btn btn-danger waves-effect" href="{{request()->server('HTTP_REFERER')}}">
             <i class="material-icons">reply</i>
             <span>BACK</span>
         </a>

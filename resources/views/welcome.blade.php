@@ -53,13 +53,21 @@
 					<div class="card h-100">
 						<div class="single-post post-style-1">
 
-							<div class="blog-image"><img src="{{asset('storage/post/'.$post->image)}}" alt="Blog Image"></div>
+							<div class="blog-image">
+								<img src="{{asset('storage/post/'.$post->image)}}" 
+								alt="{!!config('app.name').' '. $post->title!!}" 
+								title="{!! strtolower($post->title) !!}"></div>
 
-							<a class="avatar" href="#"><img src="{{asset('storage/profile/slider/'.$post->user->image)}}" alt="Profile Image"></a>
+							<a class="avatar" href="{!! route('post.details',$post->slug) !!}">
+								<img src="{{asset('storage/profile/slider/'.$post->user->image)}}" alt="Profile {!! $post->user->name!!}" 
+								title="{!! strtolower($post->title) !!}"></a>
 
 							<div class="blog-info">
 
-								<h4 class="title"><a href="#"><b>{!! $post->title !!}</b></a></h4>
+								<h4 class="title">
+									<a href="{!! route('post.details',$post->slug) !!}" 
+										title="{!! strtolower($post->title) !!}"><b>{!! $post->title !!}</b></a>
+								</h4>
 
 								<ul class="post-footer">
 									<li>
