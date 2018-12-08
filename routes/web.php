@@ -27,6 +27,7 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::post('favorite/{post}/add', 'FavoriteController@add')->name('post.favorite');
+    Route::post('comment/{post}', 'CommentController@comment')->name('post.comment');
     Route::get('dashboard', 'HomeController@dashboard')->name('dashboard');
 });
 
