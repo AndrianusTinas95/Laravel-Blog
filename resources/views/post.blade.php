@@ -18,11 +18,11 @@
 		background-size:cover;
 	}
 	.header-bg > h1{
-		color:#a81e38;
+		color:#fff;
 		text-align: center;
-		font-family:serif;
+		font-family:Roboto, sans-serif;
 		padding: 11.5%;
-		background:rgba(100,100,100, 0.3);
+		background:rgba(100,100,100, 0.5);
 	}
 </style>
 @endpush
@@ -64,7 +64,7 @@
 
 							<ul class="tags">
 								@foreach ($post->tags as $tag)
-									<li><a href="#">{{$tag->name}}</a></li>
+									<li><a href="{!!route('post.tag',$tag->slug)!!}">{{$tag->name}}</a></li>
 								@endforeach
 							</ul>
 						</div><!-- blog-post-inner -->
@@ -137,7 +137,7 @@
 							<h4 class="title"><b>POST CATEGORIES</b></h4>
 							<ul>
 								@foreach ($post->categories as $category)
-									<li><a href="#">{!!$category->name!!}</a></li>
+									<li><a href="{!!route('post.category',$category->slug)!!}">{!!$category->name!!}</a></li>
 								@endforeach
 							</ul>
 

@@ -20,8 +20,12 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('subscriber', 'SubscriberController@store')->name('subscriber.store');
 
-Route::get('post', 'PostController@index')->name('post.index');
-Route::get('post/{slug}', 'PostController@details')->name('post.details');
+Route::group(['as' => 'post.', 'prefix' => 'post'], function () {
+    Route::get('/', 'PostController@index')->name('index');
+    Route::get('/{slug}', 'PostController@details')->name('details');
+    Route::get('/category/{slug}', 'PostController@category')->name('category');
+    Route::get('/tag/{slug}', 'PostController@tag')->name('tag');
+});
 
 Auth::routes();
 
