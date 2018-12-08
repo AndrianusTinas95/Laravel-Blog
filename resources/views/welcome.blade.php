@@ -87,7 +87,9 @@
 										{!! Form::close()!!}
 										@endguest
 									</li>
-									<li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
+									<li>
+										<a href="#"><i class="ion-chatbubble"></i>{!!$post->comments()->count()!!}</a>
+									</li>
 									<li><a href="#"><i class="ion-eye"></i>{!! $post->view!!}</a></li>
 								</ul>
 
@@ -101,7 +103,7 @@
 
 		</div><!-- row -->
 
-		<a class="load-more-btn" href="#"><b>LOAD MORE</b></a>
+		<a class="load-more-btn" href="{!! route('post.index')!!}"><b>LOAD MORE</b></a>
 
 	</div><!-- container -->
 </section><!-- section -->

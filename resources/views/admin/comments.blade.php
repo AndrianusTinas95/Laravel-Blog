@@ -3,7 +3,7 @@
 <!-- JQuery DataTable Css -->
 <link href="{{asset('assets/backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css')}}" rel="stylesheet">
 @endpush
-@section('title','Posts - Favorite')
+@section('title','Comments')
 
 @section('content')
 
@@ -14,8 +14,8 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                            ALL FAVORITE POSTS
-                        <span class="badge bg-blue"> {{$posts->count()}}</span>
+                            ALL  COMMENT
+                        <span class="badge bg-blue"> {{$comments->count()}}</span>
                         </h2>
                     </div>
                     <div class="body">
@@ -24,50 +24,72 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Title</th>
-                                        <th>Author</th>
-                                        <th><i class="material-icons">favorite</i></th>
-                                        <th><i class="material-icons">comment</i></th>
-                                        <th><i class="material-icons">visibility</i></th>
-                                        <th>Action</th>
+                                        <th class="text-center">Comment Info</th>
+                                        <th class="text-center">Post Info</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
                                         <th>No</th>
-                                        <th>Title</th>
-                                        <th>Author</th>
-                                        <th><i class="material-icons">favorite</i></th>
-                                        <th><i class="material-icons">comment</i></th>
-                                        <th><i class="material-icons">visibility</i></th>
-                                        <th>Action</th>
+                                        <th class="text-center">Comment Info</th>
+                                        <th class="text-center">Post Info</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach ($posts as $i=> $post)
+                                    @foreach ($comments as $i=> $comment)
                                         <tr>
                                             <td>{{$i+1}}</td>
-                                            <td>{{str_limit($post->title,20)}}</td>
-                                            <td>{{$post->user->name}}</td>
-                                            <td>{{$post->favorite_to_users->count()}}</td>
-                                            <td>{{$post->comments()->count()}}</td>
-                                            <td>{{$post->view}}</td>
                                             <td>
-                                                <a href="{{route('author.post.show',$post->id)}}" class="btn btn-info waves-effect">
-                                                    <i class="material-icons">visibility</i>
-                                                </a>
-                                               
+                                                <div class="media">
+                                                    <div class="media-left">
+                                                        <a href=""><img src="{!!asset('storage/profile/slider/'.$comment->user->image)!!}" alt="" class="media-object" width="64" height="64">
+                                                        </a>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        {{$comment->user->name}}
+                                                        <h4 class="media-heading">
+                                                        <small>{{ $comment->created_at->diffForHumans()}}</small>
+                                                        </h4>
+                                                        <p>
+                                                            {{$comment->comment}}
+                                                        </p>
+                                                        <a target="_blank" href="{!!route('post.details',$comment->post->slug .'#comment-'.$comment->id)!!}">Reply</a>
+                                                    </div> 
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="media">
+                                                    <div class="media-right">
+                                                        <a target="_blank" href="{!!route('post.details',$comment->post->slug)!!}">
+                                                            <img src="{!!asset('storage/post/slider/'.$comment->post->image)!!}" alt="" class="media-object" width="64" height="64">
+                                                        </a>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        {{$comment->user->name}}
+                                                        <a target="_blank" href="{!!route('post.details',$comment->post->slug)!!}">
+                                                            <h4 class="media-heading">{{str_limit($comment->post->title,40)}}</h4>
+                                                        </a>
+                                                            <p>
+                                                                by <strong>{{$comment->post->user->name}}<small>{{ $comment->post->created_at->diffForHumans()}}</small></strong>
+                                                            </p>
+                                                    </div> 
+                                                </div>
+                                            </td>
+                                            <td>
                                                 <button type="button" 
                                                     class="btn btn-danger waves-effect"
-                                                    onclick="favoritePost({{$post->id}})"
+                                                    onclick="deleteComment({{$comment->id}})"
                                                     >
                                                     <i class="material-icons">delete</i>
                                                 </button>
-                                                <form id="favorite-form-{{$post->id}}" 
-                                                    action="{{route('post.favorite',$post->id)}}" 
+                                                <form id="comment-form-{{$comment->id}}" 
+                                                    action="{{route('admin.comment.destroy',$comment->id)}}" 
                                                     method="POST"
                                                     style="display:none;"
                                                     >
+                                                    @method('DELETE')
                                                     @csrf
                                                 </form>
                                             </td>
@@ -106,7 +128,7 @@
 @push('script')
     <script src="{{asset('assets/backend/js/pages/tables/jquery-datatable.js')}}"></script>
     <script>
-        function favoritePost(id){
+        function deleteComment(id){
             const swalWithBootstrapButtons = swal.mixin({
             confirmButtonClass: 'btn btn-success',
             cancelButtonClass: 'btn btn-danger',
@@ -124,7 +146,7 @@
             }).then((result) => {
             if (result.value) {
                 event.preventDefault();
-                document.getElementById('favorite-form-'+id).submit();
+                document.getElementById('comment-form-'+id).submit();
                 swalWithBootstrapButtons(
                 'Deleted!',
                 'Your data been deleted.',

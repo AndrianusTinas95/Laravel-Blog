@@ -49,6 +49,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
     Route::get('subscriber', 'SubscriberController@index')->name('subscriber.index');
     Route::delete('subscriber/{id}', 'SubscriberController@destroy')->name('subscriber.destroy');
+
+    Route::get('comment', 'CommentController@index')->name('comment.index');
+    Route::delete('comment/{comment}', 'CommentController@destroy')->name('comment.destroy');
 });
 
 Route::group(['as' => 'author.', 'prefix' => 'author', 'namespace' => 'author', 'middleware' => ['auth', 'author']], function () {
@@ -64,6 +67,8 @@ Route::group(['as' => 'author.', 'prefix' => 'author', 'namespace' => 'author', 
 
     Route::get('favorite', 'FavoriteController@index')->name('favorite.index');
 
+    Route::get('comment', 'CommentController@index')->name('comment.index');
+    Route::delete('comment/{comment}', 'CommentController@destroy')->name('comment.destroy');
 });
 
 // Route::get('/test/{post}', function (Post $post) {

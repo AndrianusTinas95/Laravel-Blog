@@ -83,6 +83,12 @@
                     <span>Favorite</span>
                 </a>
             </li>
+            <li class="{{request()->is($user.'/comment*') ? 'active':'' }}">
+                <a href="{{route($user.'.comment.index')}}">
+                    <i class="material-icons">comment</i>
+                    <span>Comments</span>
+                </a>
+            </li>
             @if (request()->is('admin*'))  
             <li class="{{request()->is('admin/subscriber*') ? 'active':'' }}">
                 <a href="{{route($user.'.subscriber.index')}}">
