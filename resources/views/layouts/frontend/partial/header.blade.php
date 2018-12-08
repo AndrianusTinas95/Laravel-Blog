@@ -7,8 +7,12 @@
 
 			<ul class="main-menu visible-on-click" id="main-menu">
 				<li><a href="{{url('/')}}">Home</a></li>
-				<li><a href="#">Categories</a></li>
-				<li><a href="#">Features</a></li>
+				<li><a href="{!! route('post.index')!!}">Post</a></li>
+				@guest
+					<li><a href="{!!route('login')!!}">Login</a></li>
+				@else
+					<li><a href="{!! auth()->user()->id == 1 ? route('admin.dashboard') : route('author.dashboard')!!}">Dashboard</a></li>
+				@endguest
 			</ul><!-- main-menu -->
 
 			<div class="src-area">

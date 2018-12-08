@@ -19,7 +19,10 @@
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('subscriber', 'SubscriberController@store')->name('subscriber.store');
+
+Route::get('post', 'PostController@index')->name('post.index');
 Route::get('post/{slug}', 'PostController@details')->name('post.details');
+
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
