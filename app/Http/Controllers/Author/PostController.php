@@ -66,8 +66,8 @@ class PostController extends Controller
 
         $post = Post::create($request->except('image'));
 
-        $post->categories()->attach($request->categories);
-        $post->tags()->attach($request->tags);
+        $post->categories()->sync($request->categories);
+        $post->tags()->sync($request->tags);
 
         $this->image->add($request, $post, 'post');
 

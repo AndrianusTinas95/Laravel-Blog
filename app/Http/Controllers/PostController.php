@@ -12,12 +12,12 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::where(['status' => true, 'is_approved' => true])->latest()->paginate(6);
+        $posts = Post::published()->approved()->latest()->paginate(6);
         return view('posts', compact('posts'));
     }
     public function details($slug)
     {
-        $post = Post::where(['status' => true, 'is_approved' => true, 'slug' => $slug])->first();
+        $post = Post::published()->approved()->where('slug', $slug)->first();
         if ($post) {
             $blogKey = 'blog_' . $post->id;
             if (!Session::has($blogKey)) {
@@ -25,7 +25,7 @@ class PostController extends Controller
                 $post->increment('view');
                 Session::put($blogKey, 1);
             }
-            $randomposts = Post::where(['status' => true, 'is_approved' => true])->get()->random(3);
+            $randomposts = Post::published()->approved()->get()->random(3);
             return view('post', compact('post', 'randomposts'));
         } else {
             toastr()->error('Post not found ', 'Error');
@@ -36,13 +36,13 @@ class PostController extends Controller
     public function category($slug)
     {
         $category = Category::where('slug', $slug)->first();
-        $posts = $category->posts()->where(['status' => true, 'is_approved' => true])->paginate(6);
+        $posts = $category->posts()->published()->approved()->paginate(6);
         return view('category', compact('category', 'posts'));
     }
     public function tag($slug)
     {
         $tag = Tag::where('slug', $slug)->first();
-        $posts = $tag->posts()->where(['status' => true, 'is_approved' => true])->paginate(6);
+        $posts = $tag->posts()->published()->approved()->paginate(6);
         return view('tag', compact('tag', 'posts'));
     }
 }

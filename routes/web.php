@@ -20,6 +20,8 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('subscriber', 'SubscriberController@store')->name('subscriber.store');
 
+Route::get('search', 'SearchController@search')->name('search');
+
 Route::group(['as' => 'post.', 'prefix' => 'post'], function () {
     Route::get('/', 'PostController@index')->name('index');
     Route::get('/{slug}', 'PostController@details')->name('details');
@@ -75,6 +77,7 @@ Route::group(['as' => 'author.', 'prefix' => 'author', 'namespace' => 'author', 
     Route::delete('comment/{comment}', 'CommentController@destroy')->name('comment.destroy');
 });
 
-// Route::get('/test/{post}', function (Post $post) {
-//     return $post;
-// });
+View::composer('layouts.frontend.partial.footer', function ($view) {
+    $categories = App\Models\Category::all();
+    $view->with('categories', $categories);
+});

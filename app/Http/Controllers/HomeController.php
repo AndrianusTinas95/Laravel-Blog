@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $posts = Post::where(['status' => true, 'is_approved' => true])->latest()->get()->take(9);
+        $posts = Post::published()->approved()->latest()->get()->take(9);
         return view('welcome', compact('categories', 'posts'));
     }
 
