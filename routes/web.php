@@ -27,6 +27,7 @@ Route::group(['as' => 'post.', 'prefix' => 'post'], function () {
     Route::get('/{slug}', 'PostController@details')->name('details');
     Route::get('/category/{slug}', 'PostController@category')->name('category');
     Route::get('/tag/{slug}', 'PostController@tag')->name('tag');
+    Route::get('/author/{username}/profile', 'PostController@profile')->name('author.profile');
 });
 
 Auth::routes();
@@ -58,6 +59,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
     Route::get('comment', 'CommentController@index')->name('comment.index');
     Route::delete('comment/{comment}', 'CommentController@destroy')->name('comment.destroy');
+
+    Route::get('author', 'AuthorController@index')->name('author.index');
+    Route::delete('author/{author}', 'AuthorController@destroy')->name('author.destroy');
 });
 
 Route::group(['as' => 'author.', 'prefix' => 'author', 'namespace' => 'author', 'middleware' => ['auth', 'author']], function () {

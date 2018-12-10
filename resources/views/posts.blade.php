@@ -33,9 +33,9 @@
 									alt="{!!config('app.name').' '. $post->title!!}" 
 									title="{!! strtolower($post->title) !!}"></div>
 	
-								<a class="avatar" href="{!! route('post.details',$post->slug) !!}">
+								<a class="avatar" href="{!! route('post.author.profile',$post->user->username) !!}">
 									<img src="{{asset('storage/profile/slider/'.$post->user->image)}}" alt="Profile {!! $post->user->name!!}" 
-									title="{!! strtolower($post->title) !!}"></a>
+									title="{!! strtolower($post->user->name) !!}"></a>
 	
 								<div class="blog-info">
 	

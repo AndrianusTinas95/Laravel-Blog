@@ -45,7 +45,7 @@
 							<div class="post-info">
 
 								<div class="left-area">
-									<a class="avatar" href="#"><img src="{!!asset('storage/profile/slider/'.$post->user->image)!!}" alt="Profile {!! $post->user->name!!}"></a>
+									<a class="avatar" href="{!! route('post.author.profile',$post->user->username) !!}"><img src="{!!asset('storage/profile/slider/'.$post->user->image)!!}" alt="Profile {!! $post->user->name!!}"></a>
 								</div>
 
 								<div class="middle-area">
@@ -168,10 +168,10 @@
 									 title="{!! strtolower($randompost->title) !!}">
 								</div>
 	
-								<a class="avatar" href="{!! route('post.details',$randompost->slug) !!}">
+								<a class="avatar" href="{!! route('post.author.profile',$randompost->user->username) !!}">
 									<img src="{{asset('storage/profile/slider/'.$randompost->user->image)}}" 
 									alt="Profile {!!$randompost->user->name !!}" 
-									title="{!! strtolower($randompost->title) !!}"></a>
+									title="{!! strtolower($randompost->user->name) !!}"></a>
 	
 								<div class="blog-info">
 	

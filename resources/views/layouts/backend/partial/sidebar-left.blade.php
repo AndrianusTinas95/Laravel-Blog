@@ -96,6 +96,12 @@
                     <span>Subcribers</span>
                 </a>
             </li>
+            <li class="{{request()->is('admin/author*') ? 'active':'' }}">
+                <a href="{{route($user.'.author.index')}}">
+                    <i class="material-icons">account_circle</i>
+                    <span>Authors</span>
+                </a>
+            </li>
             @endif
 
             <li class="header">System</li>

@@ -7,6 +7,7 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Session;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -44,5 +45,17 @@ class PostController extends Controller
         $tag = Tag::where('slug', $slug)->first();
         $posts = $tag->posts()->published()->approved()->paginate(6);
         return view('tag', compact('tag', 'posts'));
+    }
+
+    public function profile($username)
+    {
+        $author = User::where('username', $username)->first();
+        if ($author) {
+            $posts = $author->posts()->published()->approved()->paginate(4);
+
+            return view('profile', compact('author', 'posts'));
+        } else {
+            abort(404);
+        }
     }
 }
